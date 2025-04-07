@@ -1,0 +1,22 @@
+[package]
+name = "vhsrekon"
+version = "0.6.0"
+edition = "2021"
+authors = ["0xnoid <efg@mimmikk.com>"]
+repository = "https://github.com/0xnoid/vhsrekon"
+description = "Reverse discovery tool for vHosts"
+license = "AGPLv3"
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.12.12", features = ["default-tls"] }
+futures = "0.3"
+similar = "2.4"
+rustls = "0.23.21"
+rustls-pemfile = "2.2.0"
+webpki-roots = "0.26.7"
+x509-parser = "0.16"
+chrono = "0.4"
+indicatif = "0.17.9"
+regex = "1.11.1"

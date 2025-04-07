@@ -1,0 +1,31 @@
+# x64 Version
+FROM rust:1.75-slim-bullseye as builder
+WORKDIR /usr/src/vhsrekon
+COPY . .
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    pkg-config \
+    libssl-dev && \
+    rustup target add x86_64-unknown-linux-gnu && \
+    cargo build --release --target x86_64-unknown-linux-gnu
+
+FROM debian:bullseye-slim
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    openssl \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -r vhsrekon && useradd -r -g vhsrekon vhsrekon
+USER vhsrekon
+
+COPY --from=builder /usr/src/vhsrekon/target/x86_64-unknown-linux-gnu/release/vhsrekon /usr/local/bin/
+
+WORKDIR /data
+HEALTHCHECK --interval=30s --timeout=3s \
+    CMD vhsrekon --version || exit 1
+
+LABEL org.opencontainers.image.source="https://github.com/0xnoid/vhsrekon" \
+    org.opencontainers.image.description="Virtual Host Scanner" \
+    org.opencontainers.image.licenses="GPLv3"
+
+ENTRYPOINT ["vhsrekon"]

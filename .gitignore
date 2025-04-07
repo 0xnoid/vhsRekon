@@ -1,0 +1,11 @@
+debug/
+target/
+target/*
+Cargo.lock
+Cargo.toml.build
+**/*.rs.bk
+*.pdb
+PKGBUILD
+build/
+build/*
+vhsrekon-*.tar.gz
